@@ -1,0 +1,497 @@
+---
+swagger: "2.0"
+info:
+  description: "Testing API for Spiral Media Tracker"
+  version: "0.1.0"
+  title: "Spiral Media Tracker"
+  termsOfService: "http://spiral6.xyz/api/terms"
+  contact:
+    email: "admin@spiral6.xyz"
+  license:
+    name: "MIT"
+    url: "https://opensource.org/licenses/MIT"
+host: "localhost"
+basePath: "/api"
+tags:
+- name: "anime"
+  description: "Anime items endpoint."
+  externalDocs:
+    description: "Find out more"
+    url: "http://spiral6.xyz/wiki/api/anime"
+- name: "movies"
+  description: "Movie items endpoint."
+  externalDocs:
+    description: "Find out more"
+    url: "http://spiral6.xyz/wiki/api/movies"
+schemes:
+- "https"
+- "http"
+security:
+- api_key: []
+paths:
+  /anime:
+    get:
+      tags:
+      - "anime"
+      summary: "Get all anime."
+      description: "Return all anime."
+      operationId: "get_anime"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Operation successful."
+      x-swagger-router-controller: "swagger_server.controllers.anime_controller"
+    post:
+      tags:
+      - "anime"
+      summary: "Add a new anime to the database."
+      description: ""
+      operationId: "add_anime"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Anime object that needs to be added to the database."
+        required: true
+        schema:
+          $ref: "#/definitions/Anime"
+      responses:
+        405:
+          description: "Invalid input."
+      security:
+      - mediatracker_auth:
+        - "write"
+      x-swagger-router-controller: "swagger_server.controllers.anime_controller"
+    put:
+      tags:
+      - "anime"
+      summary: "Update an anime in the database."
+      description: ""
+      operationId: "update_anime"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Anime object that needs to be added to the database."
+        required: true
+        schema:
+          $ref: "#/definitions/Anime"
+      responses:
+        404:
+          description: "Anime not found."
+        405:
+          description: "Validation exception."
+      security:
+      - mediatracker_auth:
+        - "write"
+      x-swagger-router-controller: "swagger_server.controllers.anime_controller"
+  /anime/{name}:
+    get:
+      tags:
+      - "anime"
+      summary: "Find anime by name."
+      description: "Returns a single anime."
+      operationId: "get_anime_by_name"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of anime to return."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Operation succesful."
+          schema:
+            $ref: "#/definitions/Anime"
+        404:
+          description: "Anime not found."
+      x-swagger-router-controller: "swagger_server.controllers.anime_controller"
+    delete:
+      tags:
+      - "anime"
+      summary: "Deletes an anime."
+      description: ""
+      operationId: "delete_anime"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "name"
+        in: "path"
+        description: "Name of anime to delete."
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Anime not found."
+      security:
+      - mediatracker_auth:
+        - "write"
+      x-swagger-router-controller: "swagger_server.controllers.anime_controller"
+  /movies:
+    get:
+      tags:
+      - "movies"
+      summary: "Get all movies."
+      description: "Return all movies."
+      operationId: "get_movies"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters: []
+      responses:
+        200:
+          description: "Operation successful."
+      x-swagger-router-controller: "swagger_server.controllers.movies_controller"
+    post:
+      tags:
+      - "movies"
+      summary: "Add a new movie to the database."
+      description: ""
+      operationId: "add_movie"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Movie object that needs to be added to the database."
+        required: true
+        schema:
+          $ref: "#/definitions/Movie"
+      responses:
+        405:
+          description: "Invalid input."
+      security:
+      - mediatracker_auth:
+        - "write"
+      x-swagger-router-controller: "swagger_server.controllers.movies_controller"
+    put:
+      tags:
+      - "movies"
+      summary: "Update an movie in the database."
+      description: ""
+      operationId: "update_movie"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - in: "body"
+        name: "body"
+        description: "Movie object that needs to be added to the database."
+        required: true
+        schema:
+          $ref: "#/definitions/Movie"
+      responses:
+        404:
+          description: "Movie not found."
+        405:
+          description: "Validation exception."
+      security:
+      - mediatracker_auth:
+        - "write"
+      x-swagger-router-controller: "swagger_server.controllers.movies_controller"
+  /movies/{name}:
+    get:
+      tags:
+      - "movies"
+      summary: "Find movie by name."
+      description: "Returns a single movie."
+      operationId: "get_movie_by_name"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "name"
+        in: "path"
+        description: "Name of movie to return."
+        required: true
+        type: "string"
+      responses:
+        200:
+          description: "Operation successful."
+          schema:
+            $ref: "#/definitions/Movie"
+        404:
+          description: "Movie not found."
+      x-swagger-router-controller: "swagger_server.controllers.movies_controller"
+    delete:
+      tags:
+      - "movies"
+      summary: "Deletes a movie."
+      description: ""
+      operationId: "delete_movie"
+      produces:
+      - "application/xml"
+      - "application/json"
+      parameters:
+      - name: "api_key"
+        in: "header"
+        required: false
+        type: "string"
+      - name: "name"
+        in: "path"
+        description: "Name of movie to delete."
+        required: true
+        type: "string"
+      responses:
+        404:
+          description: "Movie not found."
+      security:
+      - mediatracker_auth:
+        - "write"
+      x-swagger-router-controller: "swagger_server.controllers.movies_controller"
+securityDefinitions:
+  mediatracker_auth:
+    type: "oauth2"
+    authorizationUrl: "http://spiral6.xyz/oauth/dialog"
+    flow: "implicit"
+    scopes:
+      write: "Modify items in database."
+      read: "Read items from database."
+  api_key:
+    type: "apiKey"
+    name: "api_key"
+    in: "header"
+definitions:
+  Character:
+    type: "object"
+    required:
+    - "name"
+    properties:
+      name:
+        type: "string"
+      actor:
+        type: "string"
+      picture:
+        type: "string"
+      actor_picture:
+        type: "string"
+    example:
+      actor: "actor"
+      name: "name"
+      picture: "picture"
+      actor_picture: "actor_picture"
+  Anime:
+    type: "object"
+    required:
+    - "format"
+    - "name"
+    - "synopsis"
+    properties:
+      name:
+        $ref: "#/definitions/Anime_name"
+      format:
+        type: "string"
+        description: "Broadcast format of anime."
+        enum:
+        - "ONA"
+        - "OVA"
+        - "TV"
+        - "Movie"
+        - "Special"
+        - "Music"
+        - "TV Short"
+      tags:
+        type: "array"
+        items:
+          type: "string"
+      genres:
+        type: "array"
+        items:
+          type: "string"
+      synopsis:
+        type: "string"
+        description: "Anime synopsis."
+      season:
+        type: "string"
+      duration:
+        type: "integer"
+        description: "Duration in minutes."
+      release_date:
+        type: "string"
+        format: "date"
+      studios:
+        type: "array"
+        items:
+          type: "string"
+      episodes:
+        type: "integer"
+        description: "Number of episodes."
+      source:
+        type: "string"
+        description: "Original source of anime."
+        enum:
+        - "Original"
+        - "Manga"
+        - "Light Novel"
+        - "Visual Novel"
+        - "Novel"
+        - "Video Game"
+        - "Doujinshi"
+      characters:
+        type: "array"
+        items:
+          $ref: "#/definitions/Character"
+      rating:
+        type: "number"
+        format: "float"
+        description: "Rating out of 100."
+    xml:
+      name: "Anime"
+    example:
+      studios:
+      - "studios"
+      - "studios"
+      format: "ONA"
+      rating: 1.4658129
+      synopsis: "synopsis"
+      source: "Original"
+      tags:
+      - "tags"
+      - "tags"
+      duration: 0
+      characters:
+      - actor: "actor"
+        name: "name"
+        picture: "picture"
+        actor_picture: "actor_picture"
+      - actor: "actor"
+        name: "name"
+        picture: "picture"
+        actor_picture: "actor_picture"
+      release_date: "2000-01-23"
+      genres:
+      - "genres"
+      - "genres"
+      name:
+        romanji: "Hagane no Renkinjutsushi: Fullmetal Alchemist"
+        native: "鋼の錬金術師 FULLMETAL ALCHEMIST"
+        english: "Fullmetal Alchemist: Brotherhood"
+      season: "season"
+      episodes: 6
+  Movie:
+    type: "object"
+    required:
+    - "name"
+    - "synopsis"
+    properties:
+      name:
+        type: "string"
+        example: "The Godfather"
+      synopsis:
+        type: "string"
+        description: "Movie synopsis."
+      directors:
+        type: "array"
+        items:
+          type: "string"
+      writers:
+        type: "array"
+        items:
+          type: "string"
+      duration:
+        type: "integer"
+        description: "Duration in minutes."
+      tags:
+        type: "array"
+        items:
+          type: "string"
+      genres:
+        type: "array"
+        items:
+          type: "string"
+      release_date:
+        type: "string"
+        format: "date"
+      characters:
+        type: "array"
+        items:
+          $ref: "#/definitions/Character"
+      rating:
+        type: "number"
+        format: "float"
+        description: "Rating out of 100."
+    xml:
+      name: "Movie"
+    example:
+      duration: 0
+      characters:
+      - actor: "actor"
+        name: "name"
+        picture: "picture"
+        actor_picture: "actor_picture"
+      - actor: "actor"
+        name: "name"
+        picture: "picture"
+        actor_picture: "actor_picture"
+      release_date: "2000-01-23"
+      genres:
+      - "genres"
+      - "genres"
+      directors:
+      - "directors"
+      - "directors"
+      name: "The Godfather"
+      rating: 6.0274563
+      synopsis: "synopsis"
+      writers:
+      - "writers"
+      - "writers"
+      tags:
+      - "tags"
+      - "tags"
+  ApiResponse:
+    type: "object"
+    properties:
+      code:
+        type: "integer"
+        format: "int32"
+      type:
+        type: "string"
+      message:
+        type: "string"
+  Anime_name:
+    properties:
+      english:
+        type: "string"
+        example: "Fullmetal Alchemist: Brotherhood"
+      romanji:
+        type: "string"
+        example: "Hagane no Renkinjutsushi: Fullmetal Alchemist"
+      native:
+        type: "string"
+        example: "鋼の錬金術師 FULLMETAL ALCHEMIST"
+    example:
+      romanji: "Hagane no Renkinjutsushi: Fullmetal Alchemist"
+      native: "鋼の錬金術師 FULLMETAL ALCHEMIST"
+      english: "Fullmetal Alchemist: Brotherhood"
+externalDocs:
+  description: "Documentation."
+  url: "http://spiral6.xyz/wiki/api"

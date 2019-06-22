@@ -1,13 +1,13 @@
 openapi: 3.0.0
 info:
-  title: Spiral Media Tracker
-  description: Testing API for Spiral Media Tracker
-  termsOfService: https://spiral6.xyz/api/terms
   contact:
     email: admin@spiral6.xyz
+  description: Testing API for Spiral Media Tracker
   license:
     name: MIT
     url: https://opensource.org/licenses/MIT
+  termsOfService: https://spiral6.xyz/api/terms
+  title: Spiral Media Tracker
   version: 0.1.0
 externalDocs:
   description: Documentation.
@@ -15,31 +15,47 @@ externalDocs:
 servers:
 - url: https://localhost/api
 tags:
-- name: anime
-  description: Anime items endpoint.
+- description: Anime items endpoint.
   externalDocs:
     description: Find out more
     url: http://spiral6.xyz/wiki/api/anime
-- name: movies
-  description: Movie items endpoint.
+  name: anime
+- description: Movie items endpoint.
   externalDocs:
     description: Find out more
     url: http://spiral6.xyz/wiki/api/movies
+  name: movies
 paths:
   /anime:
     get:
-      tags:
-      - anime
       description: Return all anime.
       operationId: get_anime
       responses:
         200:
           description: Operation successful.
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-swagger-router-controller: Anime
-    put:
       tags:
       - anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    post:
+      operationId: add_anime
+      requestBody:
+        content:
+          '*/*':
+            schema:
+              $ref: '#/components/schemas/Anime'
+        required: true
+      responses:
+        405:
+          description: Invalid input.
+      security:
+      - mediatracker_auth:
+        - write
+      tags:
+      - anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    put:
       operationId: update_anime
       requestBody:
         content:
@@ -55,17 +71,83 @@ paths:
       security:
       - mediatracker_auth:
         - write
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-swagger-router-controller: Anime
-    post:
       tags:
       - anime
-      operationId: add_anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+  /anime/{ID}:
+    delete:
+      description: ID of anime to delete.
+      operationId: delete_anime
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to delete.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: number
+        style: simple
+      responses:
+        404:
+          description: Anime not found.
+      security:
+      - mediatracker_auth:
+        - write
+      tags:
+      - anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    get:
+      description: Returns a single anime.
+      operationId: get_anime_by_id
+      parameters:
+      - description: ID of anime to return.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: number
+        style: simple
+      responses:
+        200:
+          content:
+            '*/*':
+              schema:
+                $ref: '#/components/schemas/Anime'
+          description: Operation successful.
+        404:
+          description: Anime not found.
+      tags:
+      - anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+  /movies:
+    get:
+      description: Return all movies.
+      operationId: get_movies
+      responses:
+        200:
+          description: Operation successful.
+      tags:
+      - movies
+      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    post:
+      operationId: add_movie
       requestBody:
         content:
           '*/*':
             schema:
-              $ref: '#/components/schemas/Anime'
+              $ref: '#/components/schemas/Movie'
         required: true
       responses:
         405:
@@ -73,77 +155,11 @@ paths:
       security:
       - mediatracker_auth:
         - write
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-swagger-router-controller: Anime
-  /anime/{ID}:
-    get:
-      tags:
-      - anime
-      description: Returns a single anime.
-      operationId: get_anime_by_id
-      parameters:
-      - name: ID
-        in: path
-        description: ID of anime to return.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: number
-      responses:
-        200:
-          description: Operation successful.
-          content:
-            '*/*':
-              schema:
-                $ref: '#/components/schemas/Anime'
-        404:
-          description: Anime not found.
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-swagger-router-controller: Anime
-    delete:
-      tags:
-      - anime
-      description: ID of anime to delete.
-      operationId: delete_anime
-      parameters:
-      - name: api_key
-        in: header
-        required: false
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: ID
-        in: path
-        description: ID of anime to delete.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: number
-      responses:
-        404:
-          description: Anime not found.
-      security:
-      - mediatracker_auth:
-        - write
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-swagger-router-controller: Anime
-  /movies:
-    get:
       tags:
       - movies
-      description: Return all movies.
-      operationId: get_movies
-      responses:
-        200:
-          description: Operation successful.
       x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-swagger-router-controller: Movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
     put:
-      tags:
-      - movies
       operationId: update_movie
       requestBody:
         content:
@@ -159,87 +175,80 @@ paths:
       security:
       - mediatracker_auth:
         - write
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-swagger-router-controller: Movies
-    post:
       tags:
       - movies
-      operationId: add_movie
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/Movie'
+      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+  /movies/{ID}:
+    delete:
+      description: Deletes a single movie.
+      operationId: delete_movie
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to delete.
+        explode: false
+        in: path
+        name: ID
         required: true
+        schema:
+          type: number
+        style: simple
       responses:
-        405:
-          description: Invalid input.
+        404:
+          description: Movie not found.
       security:
       - mediatracker_auth:
         - write
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-swagger-router-controller: Movies
-  /movies/{ID}:
-    get:
       tags:
       - movies
+      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    get:
       description: Returns a single movie.
       operationId: get_movie_by_name
       parameters:
-      - name: ID
-        in: path
-        description: ID of movie to return.
-        required: true
-        style: simple
+      - description: ID of movie to return.
         explode: false
+        in: path
+        name: ID
+        required: true
         schema:
           type: number
+        style: simple
       responses:
         200:
-          description: Operation successful.
           content:
             '*/*':
               schema:
                 $ref: '#/components/schemas/Movie'
+          description: Operation successful.
         404:
           description: Movie not found.
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-swagger-router-controller: Movies
-    delete:
       tags:
       - movies
-      description: Deletes a single movie.
-      operationId: delete_movie
-      parameters:
-      - name: api_key
-        in: header
-        required: false
-        style: simple
-        explode: false
-        schema:
-          type: string
-      - name: ID
-        in: path
-        description: ID of movie to delete.
-        required: true
-        style: simple
-        explode: false
-        schema:
-          type: number
-      responses:
-        404:
-          description: Movie not found.
-      security:
-      - mediatracker_auth:
-        - write
       x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-swagger-router-controller: Movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
 components:
+  callbacks: {}
+  examples: {}
+  headers: {}
+  links: {}
+  parameters: {}
+  requestBodies: {}
+  responses: {}
   schemas:
     Character:
-      required:
-      - name
-      type: object
+      example:
+        actor: actor
+        name: name
+        picture: picture
+        actor_picture: actor_picture
       properties:
         name:
           type: string
@@ -249,78 +258,10 @@ components:
           type: string
         actor_picture:
           type: string
-      example:
-        actor: actor
-        name: name
-        picture: picture
-        actor_picture: actor_picture
-    Anime:
       required:
-      - format
       - name
-      - synopsis
       type: object
-      properties:
-        id:
-          type: integer
-        name:
-          $ref: '#/components/schemas/AnimeName'
-        format:
-          type: string
-          description: Broadcast format of anime.
-          enum:
-          - ONA
-          - OVA
-          - TV
-          - Movie
-          - Special
-          - Music
-          - TV Short
-        tags:
-          type: array
-          items:
-            type: string
-        genres:
-          type: array
-          items:
-            type: string
-        synopsis:
-          type: string
-          description: Anime synopsis.
-        season:
-          type: string
-        duration:
-          type: integer
-          description: Duration in minutes.
-        release_date:
-          type: string
-          format: date
-        studios:
-          type: array
-          items:
-            type: string
-        episodes:
-          type: integer
-          description: Number of episodes.
-        source:
-          type: string
-          description: Original source of anime.
-          enum:
-          - Original
-          - Manga
-          - Light Novel
-          - Visual Novel
-          - Novel
-          - Video Game
-          - Doujinshi
-        characters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Character'
-        rating:
-          type: number
-          description: Rating out of 100.
-          format: float
+    Anime:
       example:
         id: 0
         studios:
@@ -349,56 +290,82 @@ components:
         - genres
         name:
           romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-          native: 鋼の錬金術師 FULLMETAL ALCHEMIST
+          native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
           english: 'Fullmetal Alchemist: Brotherhood'
         season: Spring 2009
         episodes: 6
-      xml:
-        name: Anime
-    Movie:
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          $ref: '#/components/schemas/AnimeName'
+        format:
+          description: Broadcast format of anime.
+          enum:
+          - ONA
+          - OVA
+          - TV
+          - Movie
+          - Special
+          - Music
+          - TV Short
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        genres:
+          items:
+            type: string
+          type: array
+        synopsis:
+          description: Anime synopsis.
+          type: string
+        season:
+          type: string
+        duration:
+          description: Duration in minutes.
+          format: int32
+          type: integer
+        release_date:
+          format: date
+          type: string
+        studios:
+          items:
+            type: string
+          type: array
+        episodes:
+          description: Number of episodes.
+          format: int32
+          type: integer
+        source:
+          description: Original source of anime.
+          enum:
+          - Original
+          - Manga
+          - Light Novel
+          - Visual Novel
+          - Novel
+          - Video Game
+          - Doujinshi
+          type: string
+        characters:
+          items:
+            $ref: '#/components/schemas/Character'
+          type: array
+        rating:
+          description: Rating out of 100.
+          format: float
+          type: number
       required:
+      - format
       - name
       - synopsis
       type: object
-      properties:
-        id:
-          type: integer
-        name:
-          type: string
-          example: The Godfather
-        synopsis:
-          type: string
-          description: Movie synopsis.
-        directors:
-          type: array
-          items:
-            type: string
-        writers:
-          type: array
-          items:
-            type: string
-        duration:
-          type: integer
-          description: Duration in minutes.
-        tags:
-          type: array
-          items:
-            type: string
-        genres:
-          type: array
-          items:
-            type: string
-        release_date:
-          type: string
-          format: date
-        characters:
-          type: array
-          items:
-            $ref: '#/components/schemas/Character'
-        rating:
-          type: number
-          description: Rating out of 100.
-          format: float
+      xml:
+        name: Anime
+    Movie:
       example:
         id: 0
         duration: 0
@@ -427,59 +394,97 @@ components:
         tags:
         - tags
         - tags
+      properties:
+        id:
+          format: int32
+          type: integer
+        name:
+          example: The Godfather
+          type: string
+        synopsis:
+          description: Movie synopsis.
+          type: string
+        directors:
+          items:
+            type: string
+          type: array
+        writers:
+          items:
+            type: string
+          type: array
+        duration:
+          description: Duration in minutes.
+          format: int32
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+        genres:
+          items:
+            type: string
+          type: array
+        release_date:
+          format: date
+          type: string
+        characters:
+          items:
+            $ref: '#/components/schemas/Character'
+          type: array
+        rating:
+          description: Rating out of 100.
+          format: float
+          type: number
+      required:
+      - name
+      - synopsis
+      type: object
       xml:
         name: Movie
     ApiResponse:
+      properties:
+        code:
+          format: int32
+          type: integer
+        type:
+          type: string
+        message:
+          type: string
       required:
       - code
       - message
       - type
       type: object
-      properties:
-        code:
-          type: integer
-          format: int32
-        type:
-          type: string
-        message:
-          type: string
     AnimeName:
+      example:
+        romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+        native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
+        english: 'Fullmetal Alchemist: Brotherhood'
+      properties:
+        english:
+          example: 'Fullmetal Alchemist: Brotherhood'
+          type: string
+        romanji:
+          example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+          type: string
+        native:
+          example: '鋼の錬金術師 FULLMETAL ALCHEMIST'
+          type: string
       required:
       - english
       - native
       - romanji
       type: object
-      properties:
-        english:
-          type: string
-          example: 'Fullmetal Alchemist: Brotherhood'
-        romanji:
-          type: string
-          example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-        native:
-          type: string
-          example: 鋼の錬金術師 FULLMETAL ALCHEMIST
-      example:
-        romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-        native: 鋼の錬金術師 FULLMETAL ALCHEMIST
-        english: 'Fullmetal Alchemist: Brotherhood'
-  responses: {}
-  parameters: {}
-  examples: {}
-  requestBodies: {}
-  headers: {}
   securitySchemes:
     mediatracker_auth:
-      type: oauth2
       flows:
         implicit:
           authorizationUrl: http://spiral6.xyz/oauth/dialog
           scopes:
             write: Modify items in database.
             read: Read items from database.
+      type: oauth2
     api_key:
-      type: apiKey
-      name: api_key
       in: header
-  links: {}
-  callbacks: {}
+      name: api_key
+      type: apiKey

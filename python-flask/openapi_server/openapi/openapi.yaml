@@ -290,7 +290,7 @@ components:
         - genres
         name:
           romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-          native: 鋼の錬金術師 FULLMETAL ALCHEMIST
+          native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
           english: 'Fullmetal Alchemist: Brotherhood'
         season: Spring 2009
         episodes: 6
@@ -458,7 +458,7 @@ components:
     AnimeName:
       example:
         romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-        native: 鋼の錬金術師 FULLMETAL ALCHEMIST
+        native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
         english: 'Fullmetal Alchemist: Brotherhood'
       properties:
         english:
@@ -468,7 +468,7 @@ components:
           example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
           type: string
         native:
-          example: 鋼の錬金術師 FULLMETAL ALCHEMIST
+          example: '鋼の錬金術師 FULLMETAL ALCHEMIST'
           type: string
       required:
       - english

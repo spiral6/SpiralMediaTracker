@@ -13,17 +13,17 @@ externalDocs:
   description: Documentation.
   url: http://spiral6.xyz/wiki/api
 servers:
-- url: https://localhost/api
+- url: http://localhost:8080/api
 tags:
 - description: Anime items endpoint.
   externalDocs:
     description: Find out more
-    url: http://spiral6.xyz/wiki/api/anime
+    url: https://spiral6.xyz/wiki/api/anime
   name: anime
 - description: Movie items endpoint.
   externalDocs:
     description: Find out more
-    url: http://spiral6.xyz/wiki/api/movies
+    url: https://spiral6.xyz/wiki/api/movies
   name: movies
 paths:
   /anime:
@@ -479,7 +479,7 @@ components:
     mediatracker_auth:
       flows:
         implicit:
-          authorizationUrl: http://spiral6.xyz/oauth/dialog
+          authorizationUrl: http://spiral6.xyz/api/oauth/dialog
           scopes:
             write: Modify items in database.
             read: Read items from database.

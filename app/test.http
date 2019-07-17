@@ -1,0 +1,13 @@
+curl -X PATCH "http://localhost:8080/api/movies" -H "accept: */*"
+
+###
+
+curl -X POST "http://localhost:8080/api/movies" -H "accept: */*" -H "api_key: test"
+
+###
+
+curl -X DELETE "http://localhost:8080/api/anime/0" -H "accept: */*" -H "api_key: test"
+
+###
+
+UPDATE http://localhost:8080/api/movies

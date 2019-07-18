@@ -19,7 +19,7 @@ class TestAnimeController(BaseTestCase):
         """
         anime = Anime()
         response = self.client.open(
-            '/api/anime',
+            '/api/v1/anime',
             method='POST',
             data=json.dumps(anime),
             content_type='application/json')
@@ -33,7 +33,7 @@ class TestAnimeController(BaseTestCase):
         """
         headers = [('api_key', 'api_key_example')]
         response = self.client.open(
-            '/api/anime/{ID}'.format(id=3.4),
+            '/api/v1/anime/{ID}'.format(id=3.4),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -45,7 +45,7 @@ class TestAnimeController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/api/anime',
+            '/api/v1/anime',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -56,21 +56,39 @@ class TestAnimeController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/api/anime/{ID}'.format(id=3.4),
+            '/api/v1/anime/{ID}'.format(id=3.4),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_update_anime(self):
-        """Test case for update_anime
+    def test_update_anime_patch(self):
+        """Test case for update_anime_patch
+
+        
+        """
+        anime = {"id":337}
+        headers = [('api_key', 'api_key_example')]
+        response = self.client.open(
+            '/api/v1/anime/{ID}'.format(id=3.4),
+            method='PATCH',
+            data=json.dumps(anime),
+            headers=headers,
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_update_anime_put(self):
+        """Test case for update_anime_put
 
         
         """
         anime = Anime()
+        headers = [('api_key', 'api_key_example')]
         response = self.client.open(
-            '/api/anime',
+            '/api/v1/anime/{ID}'.format(id=3.4),
             method='PUT',
             data=json.dumps(anime),
+            headers=headers,
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

@@ -59,11 +59,34 @@ def get_anime_by_id(id):  # noqa: E501
     return 'do some magic!'
 
 
-def update_anime(anime):  # noqa: E501
-    """update_anime
+def update_anime_patch(id, api_key=None, anime=None):  # noqa: E501
+    """update_anime_patch
 
-     # noqa: E501
+    Updates a single anime. # noqa: E501
 
+    :param id: ID of anime to update.
+    :type id: float
+    :param api_key: 
+    :type api_key: str
+    :param anime: 
+    :type anime: dict | bytes
+
+    :rtype: None
+    """
+    if connexion.request.is_json:
+        anime = Anime.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
+
+
+def update_anime_put(id, api_key=None, anime=None):  # noqa: E501
+    """update_anime_put
+
+    Updates a single anime. # noqa: E501
+
+    :param id: ID of anime to update.
+    :type id: float
+    :param api_key: 
+    :type api_key: str
     :param anime: 
     :type anime: dict | bytes
 

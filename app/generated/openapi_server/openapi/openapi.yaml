@@ -11,9 +11,9 @@ info:
   version: 0.1.0
 externalDocs:
   description: Documentation.
-  url: http://spiral6.xyz/wiki/api
+  url: https://spiral6.xyz/wiki/api
 servers:
-- url: http://localhost:8080/api
+- url: http://localhost:8080/api/v1
 tags:
 - description: Anime items endpoint.
   externalDocs:
@@ -41,33 +41,20 @@ paths:
       operationId: add_anime
       requestBody:
         content:
-          '*/*':
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Anime'
+          application/xml:
             schema:
               $ref: '#/components/schemas/Anime'
         required: true
       responses:
-        405:
+        201:
+          description: Operation successful.
+        401:
+          description: Unauthorized.
+        400:
           description: Invalid input.
-      security:
-      - mediatracker_auth:
-        - write
-      tags:
-      - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
-    put:
-      operationId: update_anime
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/Anime'
-        required: true
-      responses:
-        404:
-          description: Anime not found.
-        405:
-          description: Validation exception.
       security:
       - mediatracker_auth:
         - write
@@ -96,6 +83,8 @@ paths:
           type: number
         style: simple
       responses:
+        200:
+          description: Operation successful.
         404:
           description: Anime not found.
       security:
@@ -120,12 +109,96 @@ paths:
       responses:
         200:
           content:
-            '*/*':
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anime'
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Anime'
           description: Operation successful.
         404:
           description: Anime not found.
+      tags:
+      - anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    patch:
+      description: Updates a single anime.
+      operationId: update_anime_patch
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: number
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 337
+            schema:
+              $ref: '#/components/schemas/Anime'
+      responses:
+        200:
+          description: Operation successful.
+        404:
+          description: Anime not found.
+        400:
+          description: Invalid input.
+      security:
+      - mediatracker_auth:
+        - write
+      tags:
+      - anime
+      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    put:
+      description: Updates a single anime.
+      operationId: update_anime_put
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: number
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Anime'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Anime'
+      responses:
+        200:
+          description: Operation successful.
+        404:
+          description: Anime not found.
+        400:
+          description: Invalid input.
+      security:
+      - mediatracker_auth:
+        - write
       tags:
       - anime
       x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
@@ -145,33 +218,20 @@ paths:
       operationId: add_movie
       requestBody:
         content:
-          '*/*':
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/xml:
             schema:
               $ref: '#/components/schemas/Movie'
         required: true
       responses:
-        405:
+        201:
+          description: Operation successful.
+        400:
           description: Invalid input.
-      security:
-      - mediatracker_auth:
-        - write
-      tags:
-      - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
-    put:
-      operationId: update_movie
-      requestBody:
-        content:
-          '*/*':
-            schema:
-              $ref: '#/components/schemas/Movie'
-        required: true
-      responses:
-        404:
-          description: Movie not found.
-        405:
-          description: Validation exception.
+        401:
+          description: Unauthorized.
       security:
       - mediatracker_auth:
         - write
@@ -200,6 +260,8 @@ paths:
           type: number
         style: simple
       responses:
+        200:
+          description: Operation successful.
         404:
           description: Movie not found.
       security:
@@ -224,12 +286,98 @@ paths:
       responses:
         200:
           content:
-            '*/*':
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+            application/xml:
               schema:
                 $ref: '#/components/schemas/Movie'
           description: Operation successful.
         404:
           description: Movie not found.
+      tags:
+      - movies
+      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    patch:
+      description: Updates a single movie.
+      operationId: update_movie_patch
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: number
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 337
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        200:
+          description: Operation successful.
+        400:
+          description: Invalid input.
+        404:
+          description: Movie not found.
+      security:
+      - mediatracker_auth:
+        - write
+      tags:
+      - movies
+      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    put:
+      description: Updates a single movie.
+      operationId: update_movie_put
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: number
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        200:
+          description: Operation successful.
+        400:
+          description: Invalid input.
+        404:
+          description: Movie not found.
+      security:
+      - mediatracker_auth:
+        - write
       tags:
       - movies
       x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
@@ -479,7 +627,7 @@ components:
     mediatracker_auth:
       flows:
         implicit:
-          authorizationUrl: http://spiral6.xyz/api/oauth/dialog
+          authorizationUrl: https://spiral6.xyz/api/oauth/dialog
           scopes:
             write: Modify items in database.
             read: Read items from database.

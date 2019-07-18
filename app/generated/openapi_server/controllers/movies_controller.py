@@ -59,13 +59,36 @@ def get_movies():  # noqa: E501
     return 'do some magic!'
 
 
-def update_movie(movie):  # noqa: E501
-    """update_movie
+def update_movie_patch(id, movie, api_key=None):  # noqa: E501
+    """update_movie_patch
 
-     # noqa: E501
+    Updates a single movie. # noqa: E501
 
+    :param id: ID of movie to update.
+    :type id: float
     :param movie: 
     :type movie: dict | bytes
+    :param api_key: 
+    :type api_key: str
+
+    :rtype: None
+    """
+    if connexion.request.is_json:
+        movie = Movie.from_dict(connexion.request.get_json())  # noqa: E501
+    return 'do some magic!'
+
+
+def update_movie_put(id, movie, api_key=None):  # noqa: E501
+    """update_movie_put
+
+    Updates a single movie. # noqa: E501
+
+    :param id: ID of movie to update.
+    :type id: float
+    :param movie: 
+    :type movie: dict | bytes
+    :param api_key: 
+    :type api_key: str
 
     :rtype: None
     """

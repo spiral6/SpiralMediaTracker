@@ -19,7 +19,7 @@ class TestMoviesController(BaseTestCase):
         """
         movie = Movie()
         response = self.client.open(
-            '/api/movies',
+            '/api/v1/movies',
             method='POST',
             data=json.dumps(movie),
             content_type='application/json')
@@ -33,7 +33,7 @@ class TestMoviesController(BaseTestCase):
         """
         headers = [('api_key', 'api_key_example')]
         response = self.client.open(
-            '/api/movies/{ID}'.format(id=3.4),
+            '/api/v1/movies/{ID}'.format(id=3.4),
             method='DELETE',
             headers=headers)
         self.assert200(response,
@@ -45,7 +45,7 @@ class TestMoviesController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/api/movies/{ID}'.format(id=3.4),
+            '/api/v1/movies/{ID}'.format(id=3.4),
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
@@ -56,21 +56,39 @@ class TestMoviesController(BaseTestCase):
         
         """
         response = self.client.open(
-            '/api/movies',
+            '/api/v1/movies',
             method='GET')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))
 
-    def test_update_movie(self):
-        """Test case for update_movie
+    def test_update_movie_patch(self):
+        """Test case for update_movie_patch
+
+        
+        """
+        movie = {"id":337}
+        headers = [('api_key', 'api_key_example')]
+        response = self.client.open(
+            '/api/v1/movies/{ID}'.format(id=3.4),
+            method='PATCH',
+            data=json.dumps(movie),
+            headers=headers,
+            content_type='application/json')
+        self.assert200(response,
+                       'Response body is : ' + response.data.decode('utf-8'))
+
+    def test_update_movie_put(self):
+        """Test case for update_movie_put
 
         
         """
         movie = Movie()
+        headers = [('api_key', 'api_key_example')]
         response = self.client.open(
-            '/api/movies',
+            '/api/v1/movies/{ID}'.format(id=3.4),
             method='PUT',
             data=json.dumps(movie),
+            headers=headers,
             content_type='application/json')
         self.assert200(response,
                        'Response body is : ' + response.data.decode('utf-8'))

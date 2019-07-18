@@ -1,1 +1,4 @@
 generator/
+__pycache__/
+.vscode/
+*.log

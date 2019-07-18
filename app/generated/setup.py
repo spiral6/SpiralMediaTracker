@@ -23,7 +23,7 @@ setup(
     name=NAME,
     version=VERSION,
     description="Spiral Media Tracker",
-    author_email="admin@spiral6.xyz",
+    author_email="admin[at]spiral6[dot]xyz",
     url="",
     keywords=["OpenAPI", "Spiral Media Tracker"],
     install_requires=REQUIRES,

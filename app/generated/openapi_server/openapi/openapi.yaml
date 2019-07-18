@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   contact:
-    email: admin@spiral6.xyz
+    email: admin[at]spiral6[dot]xyz
   description: Testing API for Spiral Media Tracker
   license:
     name: MIT
@@ -10,7 +10,7 @@ info:
   title: Spiral Media Tracker
   version: 0.1.0
 externalDocs:
-  description: Documentation.
+  description: Documentation
   url: https://spiral6.xyz/wiki/api
 servers:
 - url: http://localhost:8080/api/v1

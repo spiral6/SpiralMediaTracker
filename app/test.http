@@ -6,8 +6,15 @@ curl -X POST "http://localhost:8080/api/movies" -H "accept: */*" -H "api_key: te
 
 ###
 
-curl -X DELETE "http://localhost:8080/api/anime/0" -H "accept: */*" -H "api_key: test"
-
+curl -X DELETE "http://localhost:8080/api/v1/anime/" -H "accept: */*" -H "api_key: test"
 ###
 
 UPDATE http://localhost:8080/api/movies
+
+###
+
+curl -X GET "http://localhost:8080/api/v1/anime" -H "accept: */*"
+
+###
+
+curl -X GET "http://localhost:8080/api/v1/movies" -H "accept: */*"

@@ -36,8 +36,6 @@ paths:
           description: Operation successful.
       tags:
       - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
     post:
       operationId: add_anime
       requestBody:
@@ -61,8 +59,6 @@ paths:
         - write
       tags:
       - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
   /anime/{ID}:
     get:
       description: Returns a single anime.
@@ -90,8 +86,6 @@ paths:
           description: Anime not found.
       tags:
       - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
     delete:
       description: ID of anime to delete.
       operationId: delete_anime
@@ -121,8 +115,6 @@ paths:
         - write
       tags:
       - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
     patch:
       description: Updates a single anime.
       operationId: update_anime_patch
@@ -161,8 +153,6 @@ paths:
         - write
       tags:
       - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
     put:
       description: Updates a single anime.
       operationId: update_anime_put
@@ -202,8 +192,6 @@ paths:
         - write
       tags:
       - anime
-      x-annotation-swagger-router-controller: swagger_server.controllers.anime_controller
-      x-openapi-router-controller: openapi_server.controllers.anime_controller
   /movies:
     get:
       description: Return all movies.
@@ -213,8 +201,6 @@ paths:
           description: Operation successful.
       tags:
       - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
     post:
       operationId: add_movie
       requestBody:
@@ -238,8 +224,6 @@ paths:
         - write
       tags:
       - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
   /movies/{ID}:
     get:
       description: Returns a single movie.
@@ -267,8 +251,6 @@ paths:
           description: Movie not found.
       tags:
       - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
     delete:
       description: Deletes a single movie.
       operationId: delete_movie
@@ -298,8 +280,6 @@ paths:
         - write
       tags:
       - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
     patch:
       description: Updates a single movie.
       operationId: update_movie_patch
@@ -339,8 +319,6 @@ paths:
         - write
       tags:
       - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
     put:
       description: Updates a single movie.
       operationId: update_movie_put
@@ -381,8 +359,6 @@ paths:
         - write
       tags:
       - movies
-      x-annotation-swagger-router-controller: swagger_server.controllers.movies_controller
-      x-openapi-router-controller: openapi_server.controllers.movies_controller
     
 components:
   callbacks: {}

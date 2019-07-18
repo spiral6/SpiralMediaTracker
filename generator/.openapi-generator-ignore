@@ -1,0 +1,3 @@
+openapi_server/controllers/anime_controller.py
+openapi_server/controllers/movies_controller.py
+openapi_server/controllers/__pycache__/

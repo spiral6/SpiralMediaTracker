@@ -15,9 +15,10 @@ def add_anime(anime):  # noqa: E501
 
     :rtype: None
     """
+    
     if connexion.request.is_json:
         anime = Anime.from_dict(connexion.request.get_json())  # noqa: E501
-    
+        
     return 'do some magic!'
 
 

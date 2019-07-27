@@ -1,7 +1,7 @@
 # Data to initialize database with
 ANIME_EXAMPLE_DATA = [
           {
-          "id" : 3,
+          "id" : 0,
           "name": {
             "english": "Turn A Gundam",
             "romaji": "∀ Gundam",
@@ -20,7 +20,7 @@ ANIME_EXAMPLE_DATA = [
           "studios": ["Sunrise","Fuji TV"],
         },
         {
-          "id": 4,
+          "id": 0,
           "name": {
             "english": "Mobile Suit Gundam",
             "romaji": "Kidou Senshi Gundam",
@@ -39,7 +39,7 @@ ANIME_EXAMPLE_DATA = [
           "studios": ["Sunrise","Bandai Entertainment"],
         },
         {
-          "id": 5,
+          "id": 0,
           "name": {
             "english": "Mobile Suit Gundam ZZ: Gundam Frag.",
             "romaji": "Kidou Senshi Gundam ZZ: Gundam Frag.",

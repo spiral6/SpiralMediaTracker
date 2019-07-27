@@ -5,7 +5,7 @@ from pymongo.errors import DuplicateKeyError
 
 # Iterate over the PEOPLE structure and populate the database
 for ANIME_EXAMPLE in ANIME_EXAMPLE_DATA:
-    anime_name = {
+    anime_name_dict = {
         "english":ANIME_EXAMPLE["name"]["english"],
         "romaji":ANIME_EXAMPLE["name"]["romaji"],
         "native":ANIME_EXAMPLE["name"]["native"],
@@ -15,7 +15,7 @@ for ANIME_EXAMPLE in ANIME_EXAMPLE_DATA:
 
     anime = Anime(
         #id=ANIME_EXAMPLE["id"],
-        animename=anime_name,
+        name=anime_name_dict,
         format=ANIME_EXAMPLE["format"],
         tags=ANIME_EXAMPLE["tags"],
         genres=ANIME_EXAMPLE["genres"],

@@ -6,18 +6,11 @@ from config import db, instance
 
 print("Initializing models.")
 
-@instance.register
-class User(Document):
-    email = fields.EmailField(required=True, unique=True)
-    birthday = fields.DateTimeField(validate=validate.Range(min=datetime(1900, 1, 1)))
-    friends = fields.ListField(fields.ReferenceField("User"))
-
-    class Meta:
-        collection = db.user
+#TODO: Media parent object model
 
 @instance.register
 class Anime(Document):
-    animename = fields.DictField(required=True)
+    name = fields.DictField(required=True)
     format = fields.StrField(validate=validate.OneOf(["ONA","OVA","TV","Movie","Special","Music","TV Short"]))
     tags =  fields.ListField(fields.StrField()) #array
     genres = fields.ListField(fields.StrField()) #array
@@ -28,7 +21,13 @@ class Anime(Document):
     studios = fields.ListField(fields.StrField()) #array
     episodes = fields.IntField()
     source = fields.StrField(validate=validate.OneOf(["Original","Manga","Light Novel","Visual Novel","Novel","Video Game","Doujinshi"]))
-    #characters = fields.ListField(fields.ReferenceField("Character"))
+    
+    #TODO: controller logic will have to implement String ID to ObjectID from bson.objectid.ObjectId for queries
+    id = fields.StrField() 
+    #TODO: client facing JSON response in API controller will have to output characters with proper structure/dictionary
+    #TODO: client facing JSON request in API controller will have to parse through characters and make separate queries for them. 
+    #TODO: frontend will use the same API
+    #TODO: same goes with staff, as in their pictures, names, roles
     rating = fields.FloatField()
     cover = fields.ReferenceField("Image")
 
@@ -38,7 +37,8 @@ class Anime(Document):
 
 @instance.register
 class Character(Document):
-    anime = fields.ListField(fields.ReferenceField("Anime"))
+    #TODO: implement fields.ReferenceField("Media")
+    #anime = fields.ListField(fields.ReferenceField("Anime"))
     name = fields.StrField(required=True)
     actor = fields.StrField()
     picture = fields.ReferenceField("Image")
@@ -56,13 +56,4 @@ class Image(Document):
         collection = db.image
 
 #Indexing is very broken in the umongo library.
-instance.db.anime.create_index([("animename.english",pymongo.ASCENDING), ("format",pymongo.ASCENDING),("release_date",pymongo.ASCENDING)], unique=True)
-
-# # Make sure that unique indexes are created
-# User.ensure_indexes()
-
-# goku = User(email='goku@sayen.com', birthday=datetime(1984, 11, 20))
-# goku.commit()
-
-# vegeta = User(email='vegeta@over9000.com', friends=[goku])
-# vegeta.commit()
+instance.db.anime.create_index([("name.english",pymongo.ASCENDING), ("format",pymongo.ASCENDING),("release_date",pymongo.ASCENDING)], unique=True, name="default")

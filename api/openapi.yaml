@@ -1,7 +1,7 @@
 openapi: 3.0.0
 info:
   contact:
-    email: admin[at]spiral6[dot]xyz
+    email: admin@spiral6.xyz
   description: Testing API for Spiral Media Tracker
   license:
     name: MIT
@@ -29,7 +29,7 @@ tags:
 paths:
   /anime:
     get:
-      description: Return all anime.
+      description: Return a list of anime.
       operationId: get_anime
       responses:
         200:
@@ -70,7 +70,7 @@ paths:
         in: path
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -103,7 +103,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -139,7 +139,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -178,7 +178,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -194,7 +194,7 @@ paths:
       - anime
   /movies:
     get:
-      description: Return all movies.
+      description: Return a list of movies.
       operationId: get_movies
       responses:
         200:
@@ -235,7 +235,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -268,7 +268,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -305,7 +305,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -345,7 +345,7 @@ paths:
         name: ID
         required: true
         schema:
-          type: number
+          type: string
         style: simple
       responses:
         200:
@@ -369,20 +369,81 @@ components:
   requestBodies: {}
   responses: {}
   schemas:
+    Staff:
+      example:
+        id: id
+        name: name
+        picture: picture
+      properties:
+        id: 
+          type: string
+        media_list: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              media_format:
+                type: string
+                enum:
+                - Movie
+                - Anime
+                - Game
+                - Book
+                - Comic
+                - Manga
+                - TV
+                - Music
+              role:
+                type: string
+        name:
+          type: string
+        picture:
+          type: string
+      required:
+      - name
+      type: object
     Character:
       example:
         actor: actor
         name: name
-        picture: picture
-        actor_picture: actor_picture
+        id: id
       properties:
+        id:
+          type: string
+        media_list: 
+          type: array
+          items:
+            type: object
+            properties:
+              name:
+                type: string
+              media_format:
+                type: string
+                enum:
+                - Movie
+                - Anime
+                - Game
+                - Book
+                - Comic
+                - Manga
+                - TV
+                - Music
+              role:
+                type: string
         name:
           type: string
         actor:
-          type: string
+          type: object
+          properties:
+            id:
+              type: string
+            name:
+              type: string
+            picture:
+              type: string
         picture:
-          type: string
-        actor_picture:
           type: string
       required:
       - name
@@ -410,10 +471,13 @@ components:
           name: name
           picture: picture
           actor_picture: actor_picture
+        staff:
+        - name: name
+          role: role
         release_date: 2009-04-05
         genres:
-        - genres
-        - genres
+        - comedy
+        - slice of life
         name:
           romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
           native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
@@ -422,10 +486,32 @@ components:
         episodes: 6
       properties:
         id:
-          format: int32
-          type: integer
+          type: string
         name:
-          $ref: '#/components/schemas/AnimeName'
+          example:
+            romaji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+            native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
+            english: 'Fullmetal Alchemist: Brotherhood'
+          properties:
+            english:
+              example: 'Fullmetal Alchemist: Brotherhood'
+              type: string
+            romaji:
+              example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+              type: string
+            native:
+              example: '鋼の錬金術師 FULLMETAL ALCHEMIST'
+              type: string
+            preferred:
+              type: string
+            synonyms:
+              items:
+                type: string
+              type: array
+          required:
+              - english
+              - native
+          type: object
         format:
           description: Broadcast format of anime.
           enum:
@@ -477,9 +563,27 @@ components:
           - Doujinshi
           type: string
         characters:
-          items:
-            $ref: '#/components/schemas/Character'
           type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              role:
+                type: string
+        staff:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              role:
+                type: string
         rating:
           description: Rating out of 100.
           format: float
@@ -504,6 +608,9 @@ components:
           name: name
           picture: picture
           actor_picture: actor_picture
+        staff:
+        - name: Francis Ford Coppola
+          role: Director
         release_date: 2000-01-23
         genres:
         - genres
@@ -511,19 +618,24 @@ components:
         directors:
         - directors
         - directors
+        producers:
+        - producers
+        - producers
         name: The Godfather
         rating: 6.0274563
         synopsis: synopsis
         writers:
         - writers
         - writers
+        actors:
+        - actors
+        - actors
         tags:
         - tags
         - tags
       properties:
         id:
-          format: int32
-          type: integer
+          type: string
         name:
           example: The Godfather
           type: string
@@ -534,7 +646,15 @@ components:
           items:
             type: string
           type: array
+        producers:
+          items:
+            type: string
+          type: array
         writers:
+          items:
+            type: string
+          type: array
+        actors:
           items:
             type: string
           type: array
@@ -554,9 +674,27 @@ components:
           format: date
           type: string
         characters:
-          items:
-            $ref: '#/components/schemas/Character'
           type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              role:
+                type: string
+        staff:
+          type: array
+          items:
+            type: object
+            properties:
+              id:
+                type: string
+              name:
+                type: string
+              role:
+                type: string
         rating:
           description: Rating out of 100.
           format: float
@@ -580,26 +718,6 @@ components:
       - code
       - message
       - type
-      type: object
-    AnimeName:
-      example:
-        romaji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-        native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
-        english: 'Fullmetal Alchemist: Brotherhood'
-      properties:
-        english:
-          example: 'Fullmetal Alchemist: Brotherhood'
-          type: string
-        romaji:
-          example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-          type: string
-        native:
-          example: '鋼の錬金術師 FULLMETAL ALCHEMIST'
-          type: string
-      required:
-      - english
-      - native
-      - romaji
       type: object
   securitySchemes:
     mediatracker_auth:

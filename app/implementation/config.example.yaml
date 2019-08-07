@@ -1,0 +1,7 @@
+#This is an example configuration file. 
+#Copy this file and rename it to config.yaml.
+
+mongodb_host": "localhost"
+monogodb_user": "test"
+mongodb_password": "test123"
+mongodb_database": "testdb"

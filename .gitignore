@@ -3,6 +3,7 @@ app/generated/
 __pycache__/
 .vscode/
 *.log
+app/implementation/config.yaml
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

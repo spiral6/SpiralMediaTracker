@@ -1,8 +1,3 @@
-generator/
-__pycache__/
-.vscode/
-*.log
-
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]

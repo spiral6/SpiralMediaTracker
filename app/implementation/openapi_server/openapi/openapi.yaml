@@ -1,0 +1,823 @@
+openapi: 3.0.0
+info:
+  contact:
+    email: admin@spiral6.xyz
+  description: Testing API for Spiral Media Tracker
+  license:
+    name: MIT
+    url: https://opensource.org/licenses/MIT
+  termsOfService: https://spiral6.xyz/api/terms
+  title: Spiral Media Tracker
+  version: 0.1.0
+externalDocs:
+  description: Documentation
+  url: https://spiral6.xyz/wiki/api
+servers:
+- url: http://localhost:8080/api/v1
+tags:
+- description: Anime items endpoint.
+  externalDocs:
+    description: Find out more
+    url: https://spiral6.xyz/wiki/api/anime
+  name: anime
+- description: Movie items endpoint.
+  externalDocs:
+    description: Find out more
+    url: https://spiral6.xyz/wiki/api/movies
+  name: movies
+paths:
+  /anime:
+    get:
+      description: Return a list of anime.
+      operationId: get_anime
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anime'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Anime'
+          description: Operation successful.
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Internal server error.
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    post:
+      operationId: add_anime
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Anime'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Anime'
+        required: true
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Unauthorized.
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+  /anime/{ID}:
+    delete:
+      description: ID of anime to delete.
+      operationId: delete_anime
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to delete.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Anime not found.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    get:
+      description: Returns a single anime.
+      operationId: get_anime_by_id
+      parameters:
+      - description: ID of anime to return.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anime'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Anime'
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Anime not found.
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    patch:
+      description: Updates a single anime.
+      operationId: update_anime_patch
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 337
+            schema:
+              $ref: '#/components/schemas/Anime'
+      responses:
+        200:
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Anime not found.
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    put:
+      description: Updates a single anime.
+      operationId: update_anime_put
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Anime'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Anime'
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Anime not found.
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+  /movies:
+    get:
+      description: Return a list of movies.
+      operationId: get_movies
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: Operation successful.
+        500:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Internal server error.
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    post:
+      operationId: add_movie
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+        401:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Unauthorized.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+  /movies/{ID}:
+    delete:
+      description: Deletes a single movie.
+      operationId: delete_movie
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to delete.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    get:
+      description: Returns a single movie.
+      operationId: get_movie_by_name
+      parameters:
+      - description: ID of movie to return.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movie'
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    patch:
+      description: Updates a single movie.
+      operationId: update_movie_patch
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 337
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+    put:
+      description: Updates a single movie.
+      operationId: update_movie_put
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      requestBody:
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Movie'
+          application/xml:
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
+components:
+  callbacks: {}
+  examples: {}
+  headers: {}
+  links: {}
+  parameters: {}
+  requestBodies: {}
+  responses: {}
+  schemas:
+    Staff:
+      example:
+        id: id
+        name: name
+        picture: picture
+      properties:
+        id:
+          type: string
+        media_list:
+          items:
+            $ref: '#/components/schemas/Staff_media_list'
+          type: array
+        name:
+          type: string
+        picture:
+          type: string
+      required:
+      - name
+      type: object
+    Character:
+      example:
+        actor: actor
+        name: name
+        id: id
+      properties:
+        id:
+          type: string
+        media_list:
+          items:
+            $ref: '#/components/schemas/Staff_media_list'
+          type: array
+        name:
+          type: string
+        actor:
+          $ref: '#/components/schemas/Character_actor'
+        picture:
+          type: string
+      required:
+      - name
+      type: object
+    Anime:
+      example:
+        id: 0
+        studios:
+        - Bones
+        - Square Enix
+        format: TV
+        rating: 92
+        synopsis: synopsis
+        source: Manga
+        tags:
+        - tags
+        - tags
+        duration: 63
+        characters:
+        - actor: actor
+          name: name
+          picture: picture
+          actor_picture: actor_picture
+        - actor: actor
+          name: name
+          picture: picture
+          actor_picture: actor_picture
+        staff:
+        - name: name
+          role: role
+        release_date: 2009-04-05
+        genres:
+        - comedy
+        - slice of life
+        name:
+          romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+          native: 鋼の錬金術師 FULLMETAL ALCHEMIST
+          english: 'Fullmetal Alchemist: Brotherhood'
+        season: Spring 2009
+        episodes: 6
+      properties:
+        id:
+          type: string
+        name:
+          $ref: '#/components/schemas/Anime_name'
+        format:
+          description: Broadcast format of anime.
+          enum:
+          - ONA
+          - OVA
+          - TV
+          - Movie
+          - Special
+          - Music
+          - TV Short
+          type: string
+        tags:
+          items:
+            type: string
+          type: array
+        genres:
+          items:
+            type: string
+          type: array
+        synopsis:
+          description: Anime synopsis.
+          type: string
+        season:
+          type: string
+        duration:
+          description: Duration in minutes.
+          format: int32
+          type: integer
+        release_date:
+          format: date
+          type: string
+        studios:
+          items:
+            type: string
+          type: array
+        episodes:
+          description: Number of episodes.
+          format: int32
+          type: integer
+        source:
+          description: Original source of anime.
+          enum:
+          - Original
+          - Manga
+          - Light Novel
+          - Visual Novel
+          - Novel
+          - Video Game
+          - Doujinshi
+          type: string
+        characters:
+          items:
+            $ref: '#/components/schemas/Anime_characters'
+          type: array
+        staff:
+          items:
+            $ref: '#/components/schemas/Anime_characters'
+          type: array
+        rating:
+          description: Rating out of 100.
+          format: float
+          type: number
+      required:
+      - format
+      - name
+      - synopsis
+      type: object
+      xml:
+        name: Anime
+    Movie:
+      example:
+        id: 0
+        duration: 0
+        characters:
+        - actor: actor
+          name: name
+          picture: picture
+          actor_picture: actor_picture
+        - actor: actor
+          name: name
+          picture: picture
+          actor_picture: actor_picture
+        staff:
+        - name: Francis Ford Coppola
+          role: Director
+        release_date: 2000-01-23
+        genres:
+        - genres
+        - genres
+        directors:
+        - directors
+        - directors
+        producers:
+        - producers
+        - producers
+        name: The Godfather
+        rating: 6.0274563
+        synopsis: synopsis
+        writers:
+        - writers
+        - writers
+        actors:
+        - actors
+        - actors
+        tags:
+        - tags
+        - tags
+      properties:
+        id:
+          type: string
+        name:
+          example: The Godfather
+          type: string
+        synopsis:
+          description: Movie synopsis.
+          type: string
+        directors:
+          items:
+            type: string
+          type: array
+        producers:
+          items:
+            type: string
+          type: array
+        writers:
+          items:
+            type: string
+          type: array
+        actors:
+          items:
+            type: string
+          type: array
+        duration:
+          description: Duration in minutes.
+          format: int32
+          type: integer
+        tags:
+          items:
+            type: string
+          type: array
+        genres:
+          items:
+            type: string
+          type: array
+        release_date:
+          format: date
+          type: string
+        characters:
+          items:
+            $ref: '#/components/schemas/Anime_characters'
+          type: array
+        staff:
+          items:
+            $ref: '#/components/schemas/Anime_characters'
+          type: array
+        rating:
+          description: Rating out of 100.
+          format: float
+          type: number
+      required:
+      - name
+      - synopsis
+      type: object
+      xml:
+        name: Movie
+    ApiResponse:
+      example:
+        code: 0
+        message: message
+      properties:
+        code:
+          format: int32
+          type: integer
+        message:
+          type: string
+      required:
+      - code
+      - message
+      type: object
+    Staff_media_list:
+      properties:
+        name:
+          type: string
+        media_format:
+          enum:
+          - Movie
+          - Anime
+          - Game
+          - Book
+          - Comic
+          - Manga
+          - TV
+          - Music
+          type: string
+        role:
+          type: string
+    Character_actor:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+    Anime_name:
+      example: '{"romaji":"Hagane no Renkinjutsushi: Fullmetal Alchemist","native":"鋼の錬金術師
+        FULLMETAL ALCHEMIST","english":"Fullmetal Alchemist: Brotherhood"}'
+      properties:
+        english:
+          example: 'Fullmetal Alchemist: Brotherhood'
+          type: string
+        romaji:
+          example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+          type: string
+        native:
+          example: 鋼の錬金術師 FULLMETAL ALCHEMIST
+          type: string
+        preferred:
+          type: string
+        synonyms:
+          items:
+            type: string
+          type: array
+      required:
+      - english
+      - native
+    Anime_characters:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
+  securitySchemes:
+    mediatracker_oauth:
+      flows:
+        implicit:
+          authorizationUrl: https://spiral6.xyz/api/oauth/dialog
+          scopes:
+            write: Modify items in database.
+            read: Read items from database.
+      type: oauth2
+    api_key:
+      in: header
+      name: api_key
+      type: apiKey

@@ -1,3 +1,11 @@
-openapi_server/controllers/anime_controller.py
-openapi_server/controllers/movies_controller.py
-openapi_server/controllers/__pycache__/
+# openapi_server/controllers/anime_controller.py
+# openapi_server/controllers/movies_controller.py
+generated/openapi_server/controllers/__pycache__/
+generated/git_push.sh
+generated/.dockerignore
+generated/.gitignore
+generated/.openapi-generator-ignore
+generated/.travis.yml
+generated/Dockerfile
+generated/tox.ini
+generated/.openapi-generator/

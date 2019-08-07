@@ -1,1 +1,1 @@
-java -jar .\openapi-generator-cli.jar generate -i ..\api\openapi.yaml -g python-flask -o .\generated
+java -jar .\openapi-generator-cli.jar generate -i ..\api\openapi.yaml -g python-flask -o .\generated --ignore-file-override .\.openapi-generator-ignore

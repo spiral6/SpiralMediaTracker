@@ -15,16 +15,17 @@ externalDocs:
 servers:
 - url: http://localhost:8080/api/v1
 tags:
-- description: Anime items endpoint.
+- name: anime
+  description: Anime items endpoint.
   externalDocs:
     description: Find out more
     url: https://spiral6.xyz/wiki/api/anime
-  name: anime
-- description: Movie items endpoint.
+- name: movies
+  description: Movie items endpoint.
   externalDocs:
     description: Find out more
     url: https://spiral6.xyz/wiki/api/movies
-  name: movies
+  
 
 paths:
   /anime:
@@ -34,6 +35,19 @@ paths:
       responses:
         200:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anime'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Anime'
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       tags:
       - anime
     post:
@@ -50,12 +64,24 @@ paths:
       responses:
         201:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         401:
           description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'          
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - anime
@@ -84,6 +110,10 @@ paths:
           description: Operation successful.
         404:
           description: Anime not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       tags:
       - anime
     delete:
@@ -110,8 +140,12 @@ paths:
           description: Operation successful.
         404:
           description: Anime not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - anime
@@ -146,10 +180,18 @@ paths:
           description: Operation successful.
         404:
           description: Anime not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - anime
@@ -183,12 +225,24 @@ paths:
       responses:
         200:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         404:
           description: Anime not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - anime
@@ -199,6 +253,19 @@ paths:
       responses:
         200:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Movie'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Movie'
+        500:
+          description: Internal server error.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       tags:
       - movies
     post:
@@ -215,12 +282,24 @@ paths:
       responses:
         201:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         401:
           description: Unauthorized.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - movies
@@ -249,6 +328,10 @@ paths:
           description: Operation successful.
         404:
           description: Movie not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       tags:
       - movies
     delete:
@@ -273,10 +356,18 @@ paths:
       responses:
         200:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         404:
           description: Movie not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - movies
@@ -310,12 +401,24 @@ paths:
       responses:
         200:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         404:
           description: Movie not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - movies
@@ -350,12 +453,24 @@ paths:
       responses:
         200:
           description: Operation successful.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         400:
           description: Invalid input.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
         404:
           description: Movie not found.
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
       security:
-      - mediatracker_auth:
+      - mediatracker_oauth:
         - write
       tags:
       - movies
@@ -710,25 +825,22 @@ components:
         code:
           format: int32
           type: integer
-        type:
-          type: string
         message:
           type: string
       required:
       - code
       - message
-      - type
       type: object
   securitySchemes:
-    mediatracker_auth:
+    mediatracker_oauth:
+      type: oauth2
       flows:
         implicit:
           authorizationUrl: https://spiral6.xyz/api/oauth/dialog
           scopes:
             write: Modify items in database.
             read: Read items from database.
-      type: oauth2
     api_key:
+      type: apiKey
       in: header
       name: api_key
-      type: apiKey

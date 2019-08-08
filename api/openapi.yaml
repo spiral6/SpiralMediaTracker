@@ -564,6 +564,8 @@ components:
           romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
           native: 鋼の錬金術師 FULLMETAL ALCHEMIST
           english: 'Fullmetal Alchemist: Brotherhood'
+          preferred: 'FMA:B'
+          synonyms: []
         season: Spring 2009
         episodes: 6
       properties:
@@ -794,7 +796,7 @@ components:
           type: string
     Anime_name:
       example: '{"romaji":"Hagane no Renkinjutsushi: Fullmetal Alchemist","native":"鋼の錬金術師
-        FULLMETAL ALCHEMIST","english":"Fullmetal Alchemist: Brotherhood"}'
+        FULLMETAL ALCHEMIST","english":"Fullmetal Alchemist: Brotherhood",preferred:"FMA:B",synonyms:[]}'
       properties:
         english:
           example: 'Fullmetal Alchemist: Brotherhood'

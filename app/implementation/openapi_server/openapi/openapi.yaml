@@ -56,9 +56,6 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Anime'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Anime'
         required: true
       responses:
         201:
@@ -67,21 +64,21 @@ paths:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
           description: Operation successful.
-        401:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-          description: Unauthorized.
+        # 401:
+        #   content:
+        #     application/json:
+        #       schema:
+        #         $ref: '#/components/schemas/ApiResponse'
+        #   description: Unauthorized.
         400:
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
           description: Invalid input.
-      security:
-      - mediatracker_oauth:
-        - write
+      # security:
+      # - mediatracker_oauth:
+      #   - write
       tags:
       - anime
       x-openapi-router-controller: openapi_server.controllers.anime_controller
@@ -573,7 +570,22 @@ components:
         id:
           type: string
         name:
-          $ref: '#/components/schemas/Anime_name'
+          properties:
+            english:
+              example: 'Fullmetal Alchemist: Brotherhood'
+              type: string
+            romaji:
+              example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+              type: string
+            native:
+              example: 鋼の錬金術師 FULLMETAL ALCHEMIST
+              type: string
+            preferred:
+              type: string
+            synonyms:
+              items:
+                type: string
+              type: array
         format:
           description: Broadcast format of anime.
           enum:
@@ -626,11 +638,13 @@ components:
           type: string
         characters:
           items:
-            $ref: '#/components/schemas/Anime_characters'
+            #$ref: '#/components/schemas/Anime_characters'
+            type: string
           type: array
         staff:
           items:
-            $ref: '#/components/schemas/Anime_characters'
+            #$ref: '#/components/schemas/Anime_characters'
+            type: string
           type: array
         rating:
           description: Rating out of 100.

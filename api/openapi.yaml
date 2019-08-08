@@ -15,18 +15,16 @@ externalDocs:
 servers:
 - url: http://localhost:8080/api/v1
 tags:
-- name: anime
-  description: Anime items endpoint.
+- description: Anime items endpoint.
   externalDocs:
     description: Find out more
     url: https://spiral6.xyz/wiki/api/anime
-- name: movies
-  description: Movie items endpoint.
+  name: anime
+- description: Movie items endpoint.
   externalDocs:
     description: Find out more
     url: https://spiral6.xyz/wiki/api/movies
-  
-
+  name: movies
 paths:
   /anime:
     get:
@@ -34,7 +32,6 @@ paths:
       operationId: get_anime
       responses:
         200:
-          description: Operation successful.
           content:
             application/json:
               schema:
@@ -42,14 +39,16 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/Anime'
+          description: Operation successful.
         500:
-          description: Internal server error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Internal server error.
       tags:
       - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
     post:
       operationId: add_anime
       requestBody:
@@ -57,72 +56,40 @@ paths:
           application/json:
             schema:
               $ref: '#/components/schemas/Anime'
-          application/xml:
-            schema:
-              $ref: '#/components/schemas/Anime'
         required: true
       responses:
         201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Operation successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-        401:
-          description: Unauthorized.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
+        # 401:
+        #   content:
+        #     application/json:
+        #       schema:
+        #         $ref: '#/components/schemas/ApiResponse'
+        #   description: Unauthorized.
         400:
-          description: Invalid input.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'          
-      security:
-      - mediatracker_oauth:
-        - write
-      tags:
-      - anime
-  /anime/{ID}:
-    get:
-      description: Returns a single anime.
-      operationId: get_anime_by_id
-      parameters:
-      - name: ID
-        description: ID of anime to return.
-        explode: false
-        in: path
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        200:
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/Anime'
-            application/xml:
-              schema:
-                $ref: '#/components/schemas/Anime'
-          description: Operation successful.
-        404:
-          description: Anime not found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
+      # security:
+      # - mediatracker_oauth:
+      #   - write
       tags:
       - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+  /anime/{ID}:
     delete:
       description: ID of anime to delete.
       operationId: delete_anime
       parameters:
-      - name: api_key
-        explode: false
+      - explode: false
         in: header
+        name: api_key
         required: false
         schema:
           type: string
@@ -139,26 +106,51 @@ paths:
         200:
           description: Operation successful.
         404:
-          description: Anime not found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Anime not found.
       security:
       - mediatracker_oauth:
         - write
       tags:
       - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
+    get:
+      description: Returns a single anime.
+      operationId: get_anime_by_id
+      parameters:
+      - description: ID of anime to return.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Anime'
+            application/xml:
+              schema:
+                $ref: '#/components/schemas/Anime'
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Anime not found.
+      tags:
+      - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
     patch:
       description: Updates a single anime.
       operationId: update_anime_patch
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Anime'
-            example:
-                id: 337
       parameters:
       - explode: false
         in: header
@@ -175,29 +167,53 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 337
+            schema:
+              $ref: '#/components/schemas/Anime'
       responses:
         200:
           description: Operation successful.
         404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Anime not found.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         400:
-          description: Invalid input.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
       security:
       - mediatracker_oauth:
         - write
       tags:
       - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
     put:
       description: Updates a single anime.
       operationId: update_anime_put
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of anime to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
@@ -206,53 +222,37 @@ paths:
           application/xml:
             schema:
               $ref: '#/components/schemas/Anime'
-      parameters:
-      - explode: false
-        in: header
-        name: api_key
-        required: false
-        schema:
-          type: string
-        style: simple
-      - description: ID of anime to update.
-        explode: false
-        in: path
-        name: ID
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
         200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Operation successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Anime not found.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         400:
-          description: Invalid input.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Invalid input.
       security:
       - mediatracker_oauth:
         - write
       tags:
       - anime
+      x-openapi-router-controller: openapi_server.controllers.anime_controller
   /movies:
     get:
       description: Return a list of movies.
       operationId: get_movies
       responses:
         200:
-          description: Operation successful.
           content:
             application/json:
               schema:
@@ -260,14 +260,16 @@ paths:
             application/xml:
               schema:
                 $ref: '#/components/schemas/Movie'
+          description: Operation successful.
         500:
-          description: Internal server error.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Internal server error.
       tags:
       - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
     post:
       operationId: add_movie
       requestBody:
@@ -281,29 +283,68 @@ paths:
         required: true
       responses:
         201:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Operation successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Invalid input.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         401:
-          description: Unauthorized.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Unauthorized.
       security:
       - mediatracker_oauth:
         - write
       tags:
       - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
   /movies/{ID}:
+    delete:
+      description: Deletes a single movie.
+      operationId: delete_movie
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to delete.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
+      responses:
+        200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Operation successful.
+        404:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
+      security:
+      - mediatracker_oauth:
+        - write
+      tags:
+      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
     get:
       description: Returns a single movie.
       operationId: get_movie_by_name
@@ -327,61 +368,17 @@ paths:
                 $ref: '#/components/schemas/Movie'
           description: Operation successful.
         404:
-          description: Movie not found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
       tags:
       - movies
-    delete:
-      description: Deletes a single movie.
-      operationId: delete_movie
-      parameters:
-      - explode: false
-        in: header
-        name: api_key
-        required: false
-        schema:
-          type: string
-        style: simple
-      - description: ID of movie to delete.
-        explode: false
-        in: path
-        name: ID
-        required: true
-        schema:
-          type: string
-        style: simple
-      responses:
-        200:
-          description: Operation successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-        404:
-          description: Movie not found.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
-      security:
-      - mediatracker_oauth:
-        - write
-      tags:
-      - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
     patch:
       description: Updates a single movie.
       operationId: update_movie_patch
-      requestBody:
-        content:
-          application/json:
-            schema:
-              $ref: '#/components/schemas/Movie'
-            example:
-                id: 337
-        required: true
       parameters:
       - explode: false
         in: header
@@ -398,33 +395,58 @@ paths:
         schema:
           type: string
         style: simple
+      requestBody:
+        content:
+          application/json:
+            example:
+              id: 337
+            schema:
+              $ref: '#/components/schemas/Movie'
+        required: true
       responses:
         200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Operation successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Invalid input.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         404:
-          description: Movie not found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
       security:
       - mediatracker_oauth:
         - write
       tags:
       - movies
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
     put:
       description: Updates a single movie.
       operationId: update_movie_put
+      parameters:
+      - explode: false
+        in: header
+        name: api_key
+        required: false
+        schema:
+          type: string
+        style: simple
+      - description: ID of movie to update.
+        explode: false
+        in: path
+        name: ID
+        required: true
+        schema:
+          type: string
+        style: simple
       requestBody:
         content:
           application/json:
@@ -434,47 +456,31 @@ paths:
             schema:
               $ref: '#/components/schemas/Movie'
         required: true
-      parameters:
-      - explode: false
-        in: header
-        name: api_key
-        required: false
-        schema:
-          type: string
-        style: simple
-      - description: ID of movie to update.
-        explode: false
-        in: path
-        name: ID
-        required: true
-        schema:
-          type: string
-        style: simple
       responses:
         200:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Operation successful.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         400:
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ApiResponse'
           description: Invalid input.
-          content:
-            application/json:
-              schema:
-                $ref: '#/components/schemas/ApiResponse'
         404:
-          description: Movie not found.
           content:
             application/json:
               schema:
                 $ref: '#/components/schemas/ApiResponse'
+          description: Movie not found.
       security:
       - mediatracker_oauth:
         - write
       tags:
       - movies
-    
+      x-openapi-router-controller: openapi_server.controllers.movies_controller
 components:
   callbacks: {}
   examples: {}
@@ -490,28 +496,12 @@ components:
         name: name
         picture: picture
       properties:
-        id: 
+        id:
           type: string
-        media_list: 
-          type: array
+        media_list:
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              media_format:
-                type: string
-                enum:
-                - Movie
-                - Anime
-                - Game
-                - Book
-                - Comic
-                - Manga
-                - TV
-                - Music
-              role:
-                type: string
+            $ref: '#/components/schemas/Staff_media_list'
+          type: array
         name:
           type: string
         picture:
@@ -527,37 +517,14 @@ components:
       properties:
         id:
           type: string
-        media_list: 
-          type: array
+        media_list:
           items:
-            type: object
-            properties:
-              name:
-                type: string
-              media_format:
-                type: string
-                enum:
-                - Movie
-                - Anime
-                - Game
-                - Book
-                - Comic
-                - Manga
-                - TV
-                - Music
-              role:
-                type: string
+            $ref: '#/components/schemas/Staff_media_list'
+          type: array
         name:
           type: string
         actor:
-          type: object
-          properties:
-            id:
-              type: string
-            name:
-              type: string
-            picture:
-              type: string
+          $ref: '#/components/schemas/Character_actor'
         picture:
           type: string
       required:
@@ -595,7 +562,7 @@ components:
         - slice of life
         name:
           romanji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-          native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
+          native: 鋼の錬金術師 FULLMETAL ALCHEMIST
           english: 'Fullmetal Alchemist: Brotherhood'
         season: Spring 2009
         episodes: 6
@@ -603,10 +570,6 @@ components:
         id:
           type: string
         name:
-          example:
-            romaji: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
-            native: '鋼の錬金術師 FULLMETAL ALCHEMIST'
-            english: 'Fullmetal Alchemist: Brotherhood'
           properties:
             english:
               example: 'Fullmetal Alchemist: Brotherhood'
@@ -615,7 +578,7 @@ components:
               example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
               type: string
             native:
-              example: '鋼の錬金術師 FULLMETAL ALCHEMIST'
+              example: 鋼の錬金術師 FULLMETAL ALCHEMIST
               type: string
             preferred:
               type: string
@@ -623,10 +586,6 @@ components:
               items:
                 type: string
               type: array
-          required:
-              - english
-              - native
-          type: object
         format:
           description: Broadcast format of anime.
           enum:
@@ -678,27 +637,15 @@ components:
           - Doujinshi
           type: string
         characters:
-          type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              role:
-                type: string
+            #$ref: '#/components/schemas/Anime_characters'
+            type: string
+          type: array
         staff:
-          type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              role:
-                type: string
+            #$ref: '#/components/schemas/Anime_characters'
+            type: string
+          type: array
         rating:
           description: Rating out of 100.
           format: float
@@ -789,27 +736,13 @@ components:
           format: date
           type: string
         characters:
-          type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              role:
-                type: string
+            $ref: '#/components/schemas/Anime_characters'
+          type: array
         staff:
-          type: array
           items:
-            type: object
-            properties:
-              id:
-                type: string
-              name:
-                type: string
-              role:
-                type: string
+            $ref: '#/components/schemas/Anime_characters'
+          type: array
         rating:
           description: Rating out of 100.
           format: float
@@ -821,6 +754,9 @@ components:
       xml:
         name: Movie
     ApiResponse:
+      example:
+        code: 0
+        message: message
       properties:
         code:
           format: int32
@@ -831,16 +767,71 @@ components:
       - code
       - message
       type: object
+    Staff_media_list:
+      properties:
+        name:
+          type: string
+        media_format:
+          enum:
+          - Movie
+          - Anime
+          - Game
+          - Book
+          - Comic
+          - Manga
+          - TV
+          - Music
+          type: string
+        role:
+          type: string
+    Character_actor:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        picture:
+          type: string
+    Anime_name:
+      example: '{"romaji":"Hagane no Renkinjutsushi: Fullmetal Alchemist","native":"鋼の錬金術師
+        FULLMETAL ALCHEMIST","english":"Fullmetal Alchemist: Brotherhood"}'
+      properties:
+        english:
+          example: 'Fullmetal Alchemist: Brotherhood'
+          type: string
+        romaji:
+          example: 'Hagane no Renkinjutsushi: Fullmetal Alchemist'
+          type: string
+        native:
+          example: 鋼の錬金術師 FULLMETAL ALCHEMIST
+          type: string
+        preferred:
+          type: string
+        synonyms:
+          items:
+            type: string
+          type: array
+      required:
+      - english
+      - native
+    Anime_characters:
+      properties:
+        id:
+          type: string
+        name:
+          type: string
+        role:
+          type: string
   securitySchemes:
     mediatracker_oauth:
-      type: oauth2
       flows:
         implicit:
           authorizationUrl: https://spiral6.xyz/api/oauth/dialog
           scopes:
             write: Modify items in database.
             read: Read items from database.
+      type: oauth2
     api_key:
-      type: apiKey
       in: header
       name: api_key
+      type: apiKey

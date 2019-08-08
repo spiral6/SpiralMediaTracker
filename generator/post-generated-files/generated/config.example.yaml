@@ -2,12 +2,12 @@
 #Copy this file and rename it to config.yaml.
 
 #MongoDB connection
-mongodb_host": "localhost"
-mongodb_database": "testdb"
+mongodb_host: "localhost"
+mongodb_database: "testdb"
 
 #If this is true, it will look for the credentials below.
 mongodb_auth : "true"
 
 #Credentials
-monogodb_user": "test"
-mongodb_password": "test123"
+mongodb_user: "test"
+mongodb_password: "test123"

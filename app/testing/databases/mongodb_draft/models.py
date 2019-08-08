@@ -56,4 +56,4 @@ class Image(Document):
         collection = db.image
 
 #Indexing is very broken in the umongo library.
-instance.db.anime.create_index([("name.english",pymongo.ASCENDING), ("format",pymongo.ASCENDING),("release_date",pymongo.ASCENDING)], unique=True, name="default")
+instance.db.anime.create_index([("name.preferred",pymongo.ASCENDING), ("format",pymongo.ASCENDING),("release_date",pymongo.ASCENDING)], unique=True, name="default")

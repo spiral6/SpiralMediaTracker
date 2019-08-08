@@ -18,3 +18,11 @@ curl -X GET "http://localhost:8080/api/v1/anime" -H "accept: */*"
 ###
 
 curl -X GET "http://localhost:8080/api/v1/movies" -H "accept: */*"
+
+###
+
+curl -X POST "http://localhost:8080/api/v1/anime" -H "accept: */*" -H "Content-Type: */*" -d "" 
+
+###
+
+curl -X POST "http://localhost:8080/api/v1/anime" -H "accept: application/json" -H "Content-Type: application/json" -d "{\"characters\":[],\"duration\":63,\"episodes\":6,\"format\":\"TV\",\"genres\":[\"comedy\",\"slice of life\"],\"name\":{\"english\":\"Fullmetal Alchemist: Brotherhood\",\"native\":\"鋼の錬金術師 FULLMETAL ALCHEMIST\",\"romanji\":\"Hagane no Renkinjutsushi: Fullmetal Alchemist\",\"preferred\":\"fmab\",\"synonyms\":[]},\"rating\":92,\"release_date\":\"2009-04-05\",\"season\":\"Spring 2009\",\"source\":\"Manga\",\"staff\":[],\"studios\":[\"Bones\",\"Square Enix\"],\"synopsis\":\"synopsis\",\"tags\":[\"tags\",\"tags\"]}"
